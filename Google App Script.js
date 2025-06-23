@@ -1,13 +1,13 @@
-const SPREADSHEET_ID = '1VFnL4t4tYZghahOd-ymqiWaFBQmHti0HVcjeze4S4MY';
+const SPREADSHEET_ID = '1VFnL4t4tYZghahOd-ymqiWaFBQmHti0HVcjeze4S4MY';  // <---CHANGE THIS  
 
 function doPost(e) {
   try {
-    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Sheet1");
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName("Sheet1"); // <---MAKE SURE NAME EQUIVALENT TO SHEET NAME 
 
     const data = JSON.parse(e.postData.contents);
 
-    sheet.appendRow([
-      new Date(),                     // Timestamp
+    sheet.appendRow([                 // <---ADJUST HEADER COLUMN ARE CORRESPOND TO DATA COLLECTION 
+      new Date(),                     // Timestamp 
       data.nama || '',               // Nama
       data.nric || '',               // NRIC
       data.umur || '',              // Umur
