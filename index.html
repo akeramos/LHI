@@ -207,7 +207,7 @@
 <body>
   <div class="page-title">  <!-- Page title -->
   <h1>SARINGAN KESIHATAN PARU-PARU</h1>
-  <h3>Klinik Kesihatan Batu 9, Cheras</h3>
+  <h3>Klinik Kesihatan </h3> <!-- INSERT YOUR CLINIC NAME HERE-->
   </div>
   
   <!-- Semak risiko -->
@@ -539,7 +539,7 @@ LUNG CANCER SCREENING:${lungCancerMessage}
 
 	// Risk groups
  	const asthma = collectCheckboxValues("asthma_risk");
-  const copd = collectCheckboxValues("copd_risk");
+	const copd = collectCheckboxValues("copd_risk");
  	const lungcancer = collectCheckboxValues("lungcancer_risk");
 	const tuberculosis = collectCheckboxValues("tuberculosis_risk");
 	const merokok = collectCheckboxValues("merokok");
@@ -561,42 +561,42 @@ LUNG CANCER SCREENING:${lungCancerMessage}
     
 	// Prepare data object
       const payload = {
-    	  nama: data.get("nama").toUpperCase(),
-   	    nric: data.get("nric").toUpperCase(),
+    	nama: data.get("nama").toUpperCase(),
+   	nric: data.get("nric").toUpperCase(),
         umur: data.get("umur"),
         gender: document.forms['pumaForm']['sex'].options[document.forms['pumaForm']['sex'].selectedIndex].text,
         symptomatic: data.get("symptomatic"),
       	puma: data.get("puma"),
-   	    lungCancerStatus: lungCancerStatus,
+   	lungCancerStatus: lungCancerStatus,
         asthma,
-   	    copd,
-    	  lungcancer,
-    	  tuberculosis,
-    	  merokok,
-    	  pencemaran,
-    	  tempat_kerja,
-    	  timestamp: new Date().toISOString()
+   	copd,
+    	lungcancer,
+    	tuberculosis,
+    	merokok,
+    	pencemaran,
+    	tempat_kerja,
+    	timestamp: new Date().toISOString()
        };
 
-	// Submit to Google Apps Script Web App
- 	fetch("https://script.google.com/macros/s/AKfycbxtrLc3RJelul2VbkmiglTsSC3J9m5rB-opQqbkU_oCnvzAhspDtL_HUnWvrWTfnrhovQ/exec", {
+	// Submit to Google Apps Script Web App // INSERT YOUR GOOGLE APP SCRIPT BELOW
+ 	fetch("https://script.google.com/macros..HERE.....", {
     	method: "POST",
     	mode: "no-cors",
     	headers: {
       	"Content-Type": "application/json"
         },
 
-     body: JSON.stringify(payload)
+     	body: JSON.stringify(payload)
   	})
   	.then(() => {
    	 spinner.style.display = "none";
     	alert("Maklumat berjaya dihantar!");
     	form.reset();
     	document.getElementById("result").innerText = "";
-      document.getElementById("pumaScoreInput").value = "";
-      document.getElementById("summaryPreview").style.display = "none";
-      document.getElementById("summaryPreview").value = "";
-      document.getElementById("lungCancerAlert").style.display = "none";
+      	document.getElementById("pumaScoreInput").value = "";
+      	document.getElementById("summaryPreview").style.display = "none";
+      	document.getElementById("summaryPreview").value = "";
+      	document.getElementById("lungCancerAlert").style.display = "none";
     
     // Reset PUMA form selects
       const pumaForm = document.forms['pumaForm'];
@@ -609,33 +609,30 @@ LUNG CANCER SCREENING:${lungCancerMessage}
        "lungcancer_risk",
        "tuberculosis_risk"
       ];
-    
-    riskCheckboxNames.forEach(name => {
-      document.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => {
-        cb.checked = false;
-      });
-    });
-  })
+		riskCheckboxNames.forEach(name => {
+			document.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => {
+				cb.checked = false;
+			});
+		});
+	})
   	.catch(err => {
     	spinner.style.display = "none";
     	console.error("Submission error:", err);
-    	alert("Ralat semasa penghantaran. Sila cuba semula.");
-            	 });
-      });
+    	alert("Ralat semasa penghantaran. Sila cuba semula.");    	 
+	});
+  });
 
     // Recomendation Box
     const lungCancerCheckboxes = document.querySelectorAll('input[name="lungcancer_risk"]');
   lungCancerCheckboxes.forEach(cb => cb.addEventListener('change', checkLungCancerRisk));
 
-  function checkLungCancerRisk() {
-    const checked = Array.from(document.querySelectorAll('input[name="lungcancer_risk"]:checked')).map(cb => cb.value);
-
-    const hasAge = checked.includes("Age 50–70 years");
-    const smoker = checked.includes("Current/former smoker");
-    const occupationalOrPollution = checked.includes("Occupational exposures") || checked.includes("Ionizing radiation") || checked.includes("Air pollution");
-    const familyHistoryOrMedical = checked.includes("Family history of lung cancer") || checked.includes("Medical history");
-
-    const highRisk =
+	  function checkLungCancerRisk() {
+		  const checked = Array.from(document.querySelectorAll('input[name="lungcancer_risk"]:checked')).map(cb => cb.value);
+		  const hasAge = checked.includes("Age 50–70 years");
+		  const smoker = checked.includes("Current/former smoker");
+		  const occupationalOrPollution = checked.includes("Occupational exposures") || checked.includes("Ionizing radiation") || checked.includes("Air pollution");
+		  const familyHistoryOrMedical = checked.includes("Family history of lung cancer") || checked.includes("Medical history");
+		  const highRisk =
       hasAge &&
       (
         smoker ||
