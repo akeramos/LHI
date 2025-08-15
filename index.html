@@ -2,117 +2,703 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Form Test - GAS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <title>Saringan Kesihatan Paru-paru</title>
   <style>
+    .page-title {
+      text-align: center;
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #004d4d; 
+      color: white; 
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }   
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
-      padding: 20px;
+      font-family: 'Roboto', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1rem);
+      background-color: #eaf4fc;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      padding: clamp(10px, 5vw, 40px);
     }
-    form {
-      max-width: 400px;
-      margin: auto;
-      background: #fff;
+    .form-container, .puma-container{
+      max-width: 600px;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.8);
       padding: 20px;
+      border: 2px solid black;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
     }
-    input {
+    
+     h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+
+    .grid-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 5px;
+    }
+
+    .section {
+      background: rgba(135, 206, 250, 0.9);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: #003366;
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+  
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .section h3 {
+        font-size: 1rem;
+      }
+    }
+   
+    h2, h3 {
+      text-align: center;
+    }
+    .floating-label {
+      position: relative;
+      margin-bottom: 5px;
+    }
+    .floating-label input {
       width: 100%;
-      padding: 8px;
-      margin: 8px 0 16px;
-      border: 1px solid #ccc;
+      padding: 8px 4px 8px;
+      border: 1px solid #aaa;
       border-radius: 4px;
-      box-sizing: border-box;
+      font-size: 16px;
     }
-    button {
-      padding: 10px 16px;
-      background: #007bff;
-      color: white;
-      border: none;
+    .floating-label label {
+      position: absolute;
+      top: 10px;
+      left: 8px;
+      color: #777;
+      background: white;
+      padding: 0 4px;
+      transition: 0.2s;
+      pointer-events: none;
+    }
+    .floating-label input:focus + label,
+    .floating-label select:focus + label,
+    .floating-label select:valid + label {
+    top: -10px;
+    left: 6px;
+    font-size: 12px;
+    color: #333;
+    }
+    .floating-label input:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 6px;
+      font-size: 12px;
+      color: #333;
+    }
+    input[type="number"], select {
+      width: 100%;
+      padding: 10px 4px;
+      margin-bottom: 5px;
+      border: 1px solid #aaa;
       border-radius: 4px;
-      cursor: pointer;
+    }
+    
+    input[name="nama"],
+    input[name="nric"] {
+      text-transform: uppercase;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .checkbox-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: normal;
+      padding-right: 8px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      margin-left: 10px;
+    }
+    .button-container {
       display: flex;
       align-items: center;
-      justify-content: center;
+      margin-top: 5px;
     }
-    button:disabled {
-      background: #999;
-      cursor: not-allowed;
+    .submit-button {
+	    position: relative;
+	    flex: 1;
+	    padding: 12px;
+	    margin-bottom: 5px;
+	    background: black;
+	    color: white;
+	    border: none;
+	    border-radius: 6px;
+	    font-size: 16px;
+	    cursor: pointer;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    gap: 10px;
+    }
+    .submit-button:hover {
+      background: #333;
     }
     .spinner {
       display: none;
-      margin-left: 8px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid white;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #ccc;
+      border-top-color: white;
       border-radius: 50%;
-      width: 18px;
-      height: 18px;
       animation: spin 1s linear infinite;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    #status {
-      text-align: center;
-      margin-top: 16px;
+    #result {
+      margin-top: 20px;
       font-weight: bold;
+      text-align: center;
     }
+    @media (max-width: 600px) {
+    .info-container {
+      font-size: 15px;
+    }
+  }
   </style>
-</head>
-<body>
-  <h2 style="text-align:center;">Test Form - GAS</h2>
+  </head>
+   
+  <body>
+    <div class="page-title">  <!-- Page title -->  
+      <h1>SARINGAN KESIHATAN PARU-PARU</h1>
+      <h3>KLINIK KESIHATAN BATU 9, CHERAS</h3>
+    </div>
+        <!-- Semak risiko -->
+    <div class="info-container" 
+         style=
+         "max-width: 600px;
+          margin: 10px auto;
+          background: #e68a00;
+          padding: 20px;
+          border: 2px solid black;
+          border-radius: 8px;
+          font-size: 16px;
+          line-height: 2;                                                             
+          color: #f2f2f2; ">
+      <p style= "text-align: center;">
+        <strong>Sila semak kumpulan risiko yang berkaitan</strong><br>
+        <strong>Sekiranya YA dan berumur:</strong><br> </p>
+      <p>
+        ✅  40-49 tahun, lakukan Ujian Saringan PUMA.<br>
+        ✅  50-70 tahun, lakukan Ujian Saringan PUMA dan Saringan Risiko Kanser Paru-Paru.
+      </p>
+    </div>
+  
+  <!-- List of risk -->
+  <div class="grid-row">
+    <!-- Asthma -->
+    <div class="section">
+      <h3>Asthma</h3>
+      <ul>
+        <li><label><input type="checkbox" name="asthma_risk" value="Family history of asthma" /> Family history of asthma</label></li>
+        <li><label><input type="checkbox" name="asthma_risk" value="Allergies" /> Allergies</label></li>
+        <li><label><input type="checkbox" name="asthma_risk" value="Viral respiratory infections" /> Viral respiratory infections</label></li>
+        <li><label><input type="checkbox" name="asthma_risk" value="Occupational exposures" /> Occupational exposures</label></li>
+        <li><label><input type="checkbox" name="asthma_risk" value="Smoking" /> Smoking</label></li>
+        <li><label><input type="checkbox" name="asthma_risk" value="Air pollution" /> Air pollution</label></li>
+        <li><label><input type="checkbox" name="asthma_risk" value="Obesity" /> Obesity</label></li>
+      </ul>
+    </div>
 
-  <form id="testForm">
-    <label>Name:</label>
-    <input type="text" name="name" required>
+    <!-- COPD -->
+    <div class="section">
+      <h3>COPD</h3>
+      <ul>
+        <li><label><input type="checkbox" name="copd_risk" value="Age 40 years and above" /> Age 40 years and above</label></li>
+        <li><label><input type="checkbox" name="copd_risk" value="History of smoking" /> History of smoking</label></li>
+        <li><label><input type="checkbox" name="copd_risk" value="Long-term exposure to irritants" /> Long-term exposure to irritants
+          </label></li>
+        <li><label><input type="checkbox" name="copd_risk" value="Alpha-1 antitrypsin deficiency" /> Alpha-1 antitrypsin deficiency
+          </label></li>
+        <li><label><input type="checkbox" name="copd_risk" value="Combination of the above" /> Combination of the above</label></li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Second row: Lung Cancer and Pulmonary TB -->
+  <div class="grid-row">
+    <!-- Lung Cancer -->
+    <div class="section">
+      <h3>Lung Cancer</h3>
+      <ul>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Age 50–70 years" /> Age 50–70 years</label></li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Current/former smoker" /> Current/former smoker</label></li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Secondhand smoke exposure" /> Secondhand smoke exposure</label></li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Ionizing radiation" /> Ionizing radiation</label></li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Occupational exposures" /> Occupational exposures</label></li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Air pollution" /> Air pollution</label></li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Family history of lung cancer" /> Family history of lung cancer</label> 
+        </li>
+        <li><label><input type="checkbox" name="lungcancer_risk" value="Medical history" /> Medical history (pneumonia, COPD, TB)</label>   
+        </li>
+      </ul>
+    </div>
 
-    <label>Age:</label>
-    <input type="number" name="age" required>
+    <!-- Pulmonary TB -->
+    <div class="section">
+      <h3>Pulmonary TB</h3>
+      <ul>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Contact of TB case" /> Contact of TB case</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="PLHIV" /> People living with HIV (PLHIV)</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Healthcare workers" /> Healthcare workers</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Institutional inmates" /> Institutional inmates</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Chronic illnesses" /> Chronic illnesses</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Immunocompromised" /> Transplant/cancer patients, steroid users</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Vulnerable groups" /> Vulnerable groups</label></li>
+        <li><label><input type="checkbox" name="tuberculosis_risk" value="Substance abuse clients" /> Substance abuse clients</label></li>
+      </ul>
+    </div>
+  </div>
 
-    <button type="submit">
-      Send
-      <div class="spinner" id="spinner"></div>
-    </button>
-  </form>
+        <div class="puma-container">
+          <h2>PUMA Score Calculator</h2>
+          <form id="pumaForm">
+            <label>1. Gender:
+              <select name="sex">
+                <option value="0">Female</option>
+                <option value="1">Male</option>
+              </select>
+            </label>
+            <label>2. Age:
+              <select name="age">
+                <option value="0">40–49 years</option>
+                <option value="1">50–59 years</option>
+                <option value="2">60 years and above</option>
+              </select>
+            </label>
+            <label>3. Smoking history (pack-years):
+              <select name="smoking">
+                <option value="0">Less than 20</option>
+                <option value="1">20–30</option>
+                <option value="2">More than 30</option>
+              </select>
+            </label>
+            <label>4. Dyspnea (shortness of breath):
+              <select name="dyspnea">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </label>
+            <label>5. Chronic phlegm (≥3 months):
+              <select name="phlegm">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </label>
+            <label>6. Chronic cough:
+              <select name="cough">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </label>
+            <label>7. Any advised to perform Spirometry before:
+              <select name="advice">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </label>
+            <button type="button" onclick="calculate()">Calculate Score</button>
+          </form>
+          <div id="result"></div>
+        </div>
 
-  <div id="status"></div>
+        <div class="form-container">
+          <h2>SARINGAN KESIHATAN PARU-PARU</h2>
+
+          <form id="health-form">
+            <div class="floating-label">
+              <input type="text" name="nama" placeholder=" " required autocapitalize="characters" 
+                     autocomplete="off" autocorrect="off" spellcheck="false">
+              <label for="nama">Nama</label>
+            </div>
+
+            <div class="floating-label">
+              <input type="text" name="nric" placeholder=" " required autocapitalize="characters" 
+                     autocomplete="off" autocorrect="off" spellcheck="false">
+              <label for="nric">NRIC / Passport</label>
+            </div>
+
+            <div class="floating-label">
+        <input type="number" name="umur" placeholder=" " required min="0" max="120">
+        <label for="umur">Umur (Age)</label>
+      </div>
+
+            <div class="floating-label">
+              <select name="symptomatic" required>
+                <option value="" disabled selected hidden >Status</option>
+                <option value="Symptomatic">Symptomatic</option>
+                <option value="Not Symptomatic">Not Symptomatic</option>
+              </select>
+              <label for="symptomatic">Status Gejala</label>
+            </div>
+            <label for="puma"><strong>PUMA Score:</strong></label>
+            <input type="number" name="puma" id="pumaScoreInput" required readonly>
+
+            <div class="section">
+              <label><strong>A. Merokok</strong></label>
+              <div class="checkbox-group">
+                <label>Adakah anda merokok <input type="checkbox" name="merokok" value="Masih merokok"></label>
+                <label>Adakah anda bekas perokok <input type="checkbox" name="merokok" value="Pernah merokok"></label>
+                <label>Adakah anda terdedah kepada asap rokok <input type="checkbox" name="merokok" value="Terdedah kepada asap rokok">
+                </label>
+                <label>Tidak merokok <input type="checkbox" name="merokok" value="Tidak merokok"></label>
+              </div>
+            </div>
+
+            <div class="section">
+              <label><strong>B. Pencemaran Alam Sekitar</strong></label>
+              <div class="checkbox-group">
+                <label>Pencemaran udara seperti asap kenderaan <input type="checkbox" name="pencemaran" value="Terdedah kepada pencemaran">
+                </label>
+                <label>Tidak terdedah <input type="checkbox" name="pencemaran" value="Tidak terdedah"></label>
+              </div>
+            </div>
+
+            <div class="section">
+              <label><strong>C. Pendedahan di tempat Kerja</strong></label>
+              <div class="checkbox-group">
+                <label>Asap industri/ bahan bakar/ bahan kimia/ radiasi 
+                  <input type="checkbox" 
+                         name="tempat_kerja" 
+                         value="Pekerjaan berisiko">                
+                </label>
+                <label>Tiada risiko pekerjaan <input type="checkbox" name="tempat_kerja" value="Tiada risiko pekerjaan"></label>
+              </div>
+            </div>
+            <!--Submit button-->
+            <div class="button-container">
+              <button type="submit" class="submit-button" 
+                      style="background-color: #000099; color:white;">
+                Hantar
+                <div class="spinner" id="spinner"></div>
+              </button>
+            </div>
+            <!--Copy document into text button -->
+            <div class="button-container">
+              <button type="button" class="submit-button" onclick="copySummary()" 
+                      style="background-color: grey; color:white;">
+              Papar Ringkasan
+                <div class="spinner" id="spinnerCopy"></div>
+              </button>
+              <button type="button" class="submit-button" 
+                    style="margin-left= 5px; background-color: #b30000;" onclick="clearAll()">
+              Clear All
+            </button>
+            </div>  
+            <textarea id="summaryPreview" rows="12" style="width: 100%; margin-top: 10px; display: none;" readonly></textarea>
+            <!--Recommendation area-->
+            <div id="lungCancerAlert" 
+                 style="display: none; background-color: #ffcccc; color: red; font-weight: bold; padding: 10px;
+                        margin-top: 10px; border: 2px solid red; border-radius: 6px; text-align: center;">
+              HIGH RISK GROUP: SUGGEST FOR SCREENING OF LUNG CANCER
+            </div>
+            <!-- Clear All Button -->
+            
+    </form>
+  </div>
 
   <script>
-    const form = document.getElementById("testForm");
-    const statusDiv = document.getElementById("status");
-    const spinner = document.getElementById("spinner");
+    function calculate() {
+      const form = document.forms['pumaForm'];
+      const fields = ['sex', 'age', 'smoking', 'dyspnea', 'phlegm', 'cough', 'advice'];
+      let score = 0;
+      fields.forEach(field => {
+        score += parseInt(form[field].value);
+      });
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
+      let message = 'PUMA Score: ' + score + '/9 — ';
+      message += score >= 5
+        ? 'High Risk. Spirometry examination is recommended.'
+        : 'Low to moderate risk. For yearly PUMA assessment';
 
-      const button = form.querySelector("button");
-      button.disabled = true;
-      spinner.style.display = "inline-block";
-      statusDiv.innerText = "";
+      document.getElementById('result').innerText = message;
+      document.getElementById('pumaScoreInput').value = score;
+    }
+  
+    function copySummary() {
+      const spinner = document.getElementById('spinnerCopy');
+      const summaryBox = document.getElementById('summaryPreview');
+      spinner.style.display = 'inline-block'; // Show spinner
 
-      const formData = new FormData(form);
-      const payload = {};
-      formData.forEach((value, key) => payload[key] = value);
+      const form = document.forms['health-form'];
+      const sexSelect = document.forms['pumaForm']['sex'];
+      const gender = sexSelect.options[sexSelect.selectedIndex].text;
+      const pumaScore = document.getElementById('pumaScoreInput')?.value || '';
+      const pumaMessage = document.getElementById('result').innerText || `PUMA SCORE: ${pumaScore}`;      
+      const nama = form['nama']?.value.trim().toUpperCase() || '';
+      const nric = form['nric']?.value.trim().toUpperCase() || '';
+      const umur = form['umur']?.value.trim() || '';
+      const symptomatic = form['symptomatic']?.value || '';
+      
+    // Helper function to get checked values
+    function getCheckedValues(name) {
+      const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+      return checkboxes.length ? Array.from(checkboxes).map(cb => cb.value).join(', ') : 'Tiada';
+    }
 
-      fetch("https://https://script.google.com/macros/s/AKfycbwu_a7NkeQ7HRMYXX9KVwzSQZI69CjYhK8VJd3Q0MUO8_pDenpzgwnz4lo8QOk08qgJUQ/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.text())
-      .then(data => {
-        statusDiv.innerText = "✅ Server says: " + data;
-        form.reset();
+      const asthma = getCheckedValues('asthma_risk');
+      const copd = getCheckedValues('copd_risk');
+      const cancer = getCheckedValues('lungcancer_risk');
+      const tb = getCheckedValues('tuberculosis_risk');
+      const smoking = getCheckedValues('merokok');
+      const pollution = getCheckedValues('pencemaran');
+      const workplace = getCheckedValues('tempat_kerja');
+
+      // Check lung cancer risk for summary
+      const lungCancerSelected = Array.from(document.querySelectorAll('input[name="lungcancer_risk"]:checked')).map(cb =>   cb.value);
+      const hasAge = lungCancerSelected.includes("Age 50–70 years");
+      const smoker = lungCancerSelected.includes("Current/former smoker");
+      const occupationalOrPollution = lungCancerSelected.includes("Occupational exposures") || lungCancerSelected.includes("Ionizing radiation") || lungCancerSelected.includes("Air pollution");
+      const familyHistoryOrMedical = lungCancerSelected.includes("Family history of lung cancer") || lungCancerSelected.includes("Medical history");
+
+      const isHighLungCancerRisk = hasAge && (smoker || (occupationalOrPollution && familyHistoryOrMedical));
+      const lungCancerMessage = isHighLungCancerRisk
+  ? "*HIGH RISK GROUP*"
+  : "Low risk group";
+            
+      const summary =
+`NAMA: ${nama}
+NRIC/PASSPORT: ${nric}
+UMUR: ${umur}
+JANTINA: ${gender}
+STATUS GEJALA: ${symptomatic}
+${pumaMessage}
+
+A. RISIKO PENYAKIT:
+- Risiko ASTHMA: ${asthma}
+- Risiko COPD: ${copd}
+- Risiko KANSER PARU-PARU: ${cancer}
+- Risiko TIBI (TB): ${tb}
+
+B. FAKTOR RISIKO LAIN:
+- STATUS MEROKOK: ${smoking}
+- PENDEDAHAN PENCEMARAN UDARA: ${pollution}
+- PENDEDAHAN DI TEMPAT KERJA: ${workplace}
+
+LUNG CANCER SCREENING:${lungCancerMessage}
+`;
+
+    // Show summary in textarea
+    summaryBox.value = summary;
+    summaryBox.style.display = 'block';
+
+    // Hide spinner before copy prompt
+    spinner.style.display = 'none';
+
+    // Auto copy to clipboard
+    navigator.clipboard.writeText(summary)
+      .then(() => {
+        alert('Ringkasan berjaya dipaparkan!');
       })
       .catch(err => {
-        statusDiv.innerText = "❌ Error: " + err;
-      })
-      .finally(() => {
-        spinner.style.display = "none";
-        button.disabled = false;
+        alert('Ralat semasa menyalin: ' + err);
+      });
+  }
+  
+  document.getElementById("health-form").addEventListener("submit", function(e) {
+	e.preventDefault();
+
+	const spinner = document.getElementById("spinner");
+	spinner.style.display = "inline-block";
+
+	const form = e.target;
+	const data = new FormData(form);
+	
+	// Collect all checkboxes from risk sections and group them
+  const collectCheckboxValues = (name) => {
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(cb => cb.value).join(', ');
+       };
+
+	// Risk groups
+ 	const asthma = collectCheckboxValues("asthma_risk");
+  const copd = collectCheckboxValues("copd_risk");
+ 	const lungcancer = collectCheckboxValues("lungcancer_risk");
+	const tuberculosis = collectCheckboxValues("tuberculosis_risk");
+	const merokok = collectCheckboxValues("merokok");
+	const pencemaran = collectCheckboxValues("pencemaran");
+ 	const tempat_kerja = collectCheckboxValues("tempat_kerja");
+
+    // Extract gender from PUMA form
+    const gender = document.forms['pumaForm']['sex'].options[document.forms['pumaForm']['sex'].selectedIndex].text;
+
+// Lung cancer risk evaluation
+    const lungCancerSelected = Array.from(document.querySelectorAll('input[name="lungcancer_risk"]:checked')).map(cb => cb.value);
+    const hasAge = lungCancerSelected.includes("Age 50–70 years");
+    const smoker = lungCancerSelected.includes("Current/former smoker");
+    const occupationalOrPollution = lungCancerSelected.includes("Occupational exposures") || lungCancerSelected.includes("Ionizing radiation") || lungCancerSelected.includes("Air pollution");
+    const familyHistoryOrMedical = lungCancerSelected.includes("Family history of lung cancer") || lungCancerSelected.includes("Medical history");
+
+      const isHighLungCancerRisk = hasAge && (smoker || (occupationalOrPollution && familyHistoryOrMedical));
+      const lungCancerStatus = isHighLungCancerRisk ? "High Risk" : "Low Risk";  
+    
+	// Prepare data object
+      const payload = {
+    	  nama: data.get("nama").toUpperCase(),
+   	    nric: data.get("nric").toUpperCase(),
+        umur: data.get("umur"),
+        gender: document.forms['pumaForm']['sex'].options[document.forms['pumaForm']['sex'].selectedIndex].text,
+        symptomatic: data.get("symptomatic"),
+      	puma: data.get("puma"),
+   	    lungCancerStatus: lungCancerStatus,
+        asthma,
+   	    copd,
+    	  lungcancer,
+    	  tuberculosis,
+    	  merokok,
+    	  pencemaran,
+    	  tempat_kerja,
+    	  timestamp: new Date().toISOString()
+       };
+
+	// Submit to Google Apps Script Web App
+ 	fetch("https://script.google.com/macros/s/AKfycbySBqYvLnbUJAGDV0kfpn97BWmfELOwYXFzwzJGx-2L2D9xo4pOQgFT19uZzucLTT0HHQ/exec", {
+    	method: "POST",
+    	mode: "no-cors",
+    	headers: {
+      	"Content-Type": "application/json"
+        },
+
+     body: JSON.stringify(payload)
+  	})
+  	.then(() => {
+   	 spinner.style.display = "none";
+    	alert("Maklumat berjaya dihantar!");
+    	form.reset();
+    	document.getElementById("result").innerText = "";
+      document.getElementById("pumaScoreInput").value = "";
+      document.getElementById("summaryPreview").style.display = "none";
+      document.getElementById("summaryPreview").value = "";
+      document.getElementById("lungCancerAlert").style.display = "none";
+    
+    // Reset PUMA form selects
+      const pumaForm = document.forms['pumaForm'];
+      pumaForm.reset();
+    
+    // Clear risk checkboxes outside the form manually
+      const riskCheckboxNames = [
+       "asthma_risk",
+       "copd_risk",
+       "lungcancer_risk",
+       "tuberculosis_risk"
+      ];
+    
+    riskCheckboxNames.forEach(name => {
+      document.querySelectorAll(`input[name="${name}"]:checked`).forEach(cb => {
+        cb.checked = false;
       });
     });
-  </script>
+  })
+  	.catch(err => {
+    	spinner.style.display = "none";
+    	console.error("Submission error:", err);
+    	alert("Ralat semasa penghantaran. Sila cuba semula.");
+            	 });
+      });
+
+    // Recomendation Box
+    const lungCancerCheckboxes = document.querySelectorAll('input[name="lungcancer_risk"]');
+  lungCancerCheckboxes.forEach(cb => cb.addEventListener('change', checkLungCancerRisk));
+
+  function checkLungCancerRisk() {
+    const checked = Array.from(document.querySelectorAll('input[name="lungcancer_risk"]:checked')).map(cb => cb.value);
+
+    const hasAge = checked.includes("Age 50–70 years");
+    const smoker = checked.includes("Current/former smoker");
+    const occupationalOrPollution = checked.includes("Occupational exposures") || checked.includes("Ionizing radiation") || checked.includes("Air pollution");
+    const familyHistoryOrMedical = checked.includes("Family history of lung cancer") || checked.includes("Medical history");
+
+    const highRisk =
+      hasAge &&
+      (
+        smoker ||
+        (occupationalOrPollution && familyHistoryOrMedical)
+      );
+
+    const alertBox = document.getElementById("lungCancerAlert");
+    alertBox.style.display = highRisk ? "block" : "none";
+  }     
+        
+    function clearAll() {
+  const form = document.getElementById("health-form");
+  const pumaForm = document.forms['pumaForm'];
+
+  // Reset forms
+  form.reset();
+  pumaForm.reset();
+
+  // Clear PUMA result and score
+  document.getElementById("result").innerText = "";
+  document.getElementById("pumaScoreInput").value = "";
+
+  // Hide and clear summary box
+  const summaryBox = document.getElementById("summaryPreview");
+  summaryBox.style.display = "none";
+  summaryBox.value = "";
+
+  // Hide lung cancer alert
+  document.getElementById("lungCancerAlert").style.display = "none";
+
+  // Uncheck all checkboxes
+  const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+  allCheckboxes.forEach(cb => cb.checked = false);
+
+  // Reset all selects
+  document.querySelectorAll('select').forEach(select => {
+    if (select.options.length > 0) {
+      select.selectedIndex = 0;
+    }
+  });
+
+  alert("All selection cleared.");
+}
+
+    </script>
 </body>
 </html>
