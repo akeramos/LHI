@@ -31,4 +31,16 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringif
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("status").innerText = "✅ Sent! Server says: " + data;
+      })
+      .catch(err => {
+        document.getElementById("status").innerText = "❌ Error: " + err;
+      });
+    });
+  </script>
+</body>
+</html>
