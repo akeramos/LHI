@@ -1,44 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Form Test</title>
+  <meta charset="UTF-8">
+  <title>Form Test - GAS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+    .spinner {
+      display: none;
+      margin-left: 8px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    #status {
+      text-align: center;
+      margin-top: 16px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h2>Test Form</h2>
+  <h2 style="text-align:center;">Test Form - GAS</h2>
 
   <form id="testForm">
     <label>Name:</label>
-    <input type="text" name="name" required><br><br>
+    <input type="text" name="name" required>
 
     <label>Age:</label>
-    <input type="number" name="age" required><br><br>
+    <input type="number" name="age" required>
 
-    <button type="submit">Send</button>
+    <button type="submit">
+      Send
+      <div class="spinner" id="spinner"></div>
+    </button>
   </form>
 
   <div id="status"></div>
 
   <script>
-    document.getElementById("testForm").addEventListener("submit", function(e) {
+    const form = document.getElementById("testForm");
+    const statusDiv = document.getElementById("status");
+    const spinner = document.getElementById("spinner");
+
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const formData = new FormData(e.target);
+      const button = form.querySelector("button");
+      button.disabled = true;
+      spinner.style.display = "inline-block";
+      statusDiv.innerText = "";
+
+      const formData = new FormData(form);
       const payload = {};
       formData.forEach((value, key) => payload[key] = value);
 
-      fetch("https://script.google.com/macros/s/AKfycbwu_a7NkeQ7HRMYXX9KVwzSQZI69CjYhK8VJd3Q0MUO8_pDenpzgwnz4lo8QOk08qgJUQ/exec", {
+      fetch("https://https://script.google.com/macros/s/AKfycbwu_a7NkeQ7HRMYXX9KVwzSQZI69CjYhK8VJd3Q0MUO8_pDenpzgwnz4lo8QOk08qgJUQ/exec", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       })
       .then(res => res.text())
       .then(data => {
-        document.getElementById("status").innerText = "✅ Sent! Server says: " + data;
+        statusDiv.innerText = "✅ Server says: " + data;
+        form.reset();
       })
       .catch(err => {
-        document.getElementById("status").innerText = "❌ Error: " + err;
+        statusDiv.innerText = "❌ Error: " + err;
+      })
+      .finally(() => {
+        spinner.style.display = "none";
+        button.disabled = false;
       });
     });
   </script>
