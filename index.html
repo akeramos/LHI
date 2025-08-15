@@ -26,23 +26,9 @@
       const payload = {};
       formData.forEach((value, key) => payload[key] = value);
 
-      fetch("https://script.google.com/macros/s/AKfycbz1SZnXDrcKuf0RU0QGJQOaaJDn7O7hvwtGmRiihBb9cxLg_99qcJIMQInFx-_2FtNjAQ/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbwu_a7NkeQ7HRMYXX9KVwzSQZI69CjYhK8VJd3Q0MUO8_pDenpzgwnz4lo8QOk08qgJUQ/exec", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("status").innerText = "✅ Sent! Server says: " + data;
-      })
-      .catch(err => {
-        document.getElementById("status").innerText = "❌ Error: " + err;
-      });
-    });
-  </script>
-</body>
-</html>
-
-
+        body: JSON.stringif
